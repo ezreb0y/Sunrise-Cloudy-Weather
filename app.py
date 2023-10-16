@@ -21,11 +21,11 @@ def main():
     st.write("Section: CPE 028 - CPE41S5")
     st.write("Instructor: Dr. Jonathan Taylar")
     st.title("Predicting Class Weather (Sunrise or Cloudy)")
-    st.write(
-        "This program identifies submitted images whether they are Cloudy or Sunrise photos."
-    )
+    st.write("This program identifies submitted images whether they are Cloudy or Sunrise photos.")
 
     if login():
+        st.write("Welcome! You are logged in.")
+        st.subheader("Image Upload")
 
         @st.cache(allow_output_mutation=True)
         def load_model():
@@ -53,12 +53,13 @@ def main():
             image = Image.open(file)
             image = np.asarray(image)
             st.image(image, use_column_width=True)
-            prediction = import_and_predict(image, model)
-            class_index = np.argmax(prediction)
-            class_name = class_names[class_index]
-            string = "Prediction: " + class_name
-            st.success(string)
 
+            if st.button("Predict"):
+                prediction = import_and_predict(image, model)
+                class_index = np.argmax(prediction)
+                class_name = class_names[class_index]
+                st.write(f"Prediction: {class_name}")
 
 if __name__ == "__main__":
     main()
+
