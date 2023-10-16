@@ -4,7 +4,6 @@ import streamlit as st
 import tensorflow as tf
 from PIL import Image
 
-
 def login():
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
@@ -14,7 +13,6 @@ def login():
         else:
             st.warning("Incorrect username or password")
     return False
-
 
 def main():
     st.write("Group 4")
@@ -26,6 +24,7 @@ def main():
     )
 
     if login():
+        st.write("Welcome! You are logged in.")
 
         @st.cache(allow_output_mutation=True)
         def load_model():
@@ -53,12 +52,12 @@ def main():
             image = Image.open(file)
             image = np.asarray(image)
             st.image(image, use_column_width=True)
-            prediction = import_and_predict(image, model)
-            class_index = np.argmax(prediction)
-            class_name = class_names[class_index]
-            string = "Prediction: " + class_name
-            st.success(string)
-
+            if st.button("Predict"):
+                prediction = import_and_predict(image, model)
+                class_index = np.argmax(prediction)
+                class_name = class_names[class_index]
+                string = "Prediction: " + class_name
+                st.success(string)
 
 if __name__ == "__main__":
     main()
